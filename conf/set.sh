@@ -1,0 +1,8 @@
+#!/bin/sh
+
+CM_USERNAME=admin
+CM_PASSWORD=admin
+CM_CLUSTER_NAME='Cluster1'
+CM_API_VERSION=7
+CM_HOSTNAME=localhost
+CM_IP=127.0.0.1
