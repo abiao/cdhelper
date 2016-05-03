@@ -31,4 +31,5 @@ function download_file_in_page() {
 }
 
 download_file_in_page $CM_RPM_DIR rpm
+download_file_in_page http://archive.cloudera.com/cdh5/redhat/6/x86_64/cdh/5/RPMS/noarch rpm
 download_file_in_page $CDH_RPM_DIR rpm 
