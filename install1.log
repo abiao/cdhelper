@@ -1,0 +1,483 @@
+/tmp/scm_prepare_node.Qd3WJCtl 
+using SSH_CLIENT to get the SCM hostname: 172.31.14.229 53637 22 
+opening logging file descriptor 
+正在启动安装脚本...
+正在获取安装锁...
+BEGIN flock 4 
+END (0) 
+正在检测根权限...
+effective UID is 500 
+BEGIN which pbrun 
+END (1) 
+BEGIN sudo -S id 
+which: no pbrun in (/usr/lib64/qt-3.3/bin:/usr/local/bin:/bin:/usr/bin) 
+uid=0(root) gid=0(root) groups=0(root) 
+END (0) 
+Using 'sudo ' to acquire root privileges 
+正在检测分配...
+BEGIN grep Tikanga /etc/redhat-release 
+END (1) 
+BEGIN grep 'CentOS release 5' /etc/redhat-release 
+END (1) 
+BEGIN grep 'Scientific Linux release 5' /etc/redhat-release 
+END (1) 
+BEGIN grep Santiago /etc/redhat-release 
+Red Hat Enterprise Linux Server release 6.7 (Santiago) 
+END (0) 
+/etc/redhat-release ==> RHEL 6 
+正在检测 Cloudera Manager Server...
+BEGIN host -t PTR 172.31.14.229 
+229.14.31.172.in-addr.arpa domain name pointer ip-172-31-14-229.ap-northeast-2.compute.internal. 
+END (0) 
+using ip-172-31-14-229.ap-northeast-2.compute.internal as scm server hostname 
+BEGIN which python 
+END (0) 
+/usr/bin/python 
+BEGIN python -c 'import socket; import sys; s = socket.socket(socket.AF_INET); s.settimeout(5.0); s.connect((sys.argv[1], int(sys.argv[2]))); s.close();' ip-172-31-14-229.ap-northeast-2.compute.internal 7182 
+END (0) 
+BEGIN which wget 
+/usr/bin/wget 
+END (0) 
+BEGIN wget -qO- -T 1 -t 1 http://169.254.169.254/latest/meta-data/public-hostname && /bin/echo 
+ec2-52-78-17-4.ap-northeast-2.compute.amazonaws.com 
+END (0) 
+BEGIN wget -qO- -T 1 -t 1 http://169.254.169.254/latest/meta-data/instance-id && /bin/echo 
+i-705f3bd7 
+END (0) 
+正在执行云特定配置...
+BEGIN sudo /sbin/chkconfig iptables 
+END (1) 
+BEGIN sudo /sbin/service iptables status | grep Chain 
+END (1) 
+BEGIN sudo getenforce 
+Disabled 
+END (0) 
+BEGIN grep -e ^SELINUX=enforcing /etc/selinux/config 
+END (1) 
+BEGIN df -h | grep -o -E "^/dev/[^[:space:]]*" 
+/dev/xvda1 
+END (0) 
+BEGIN awk 'FNR > 2 {print $NF}' /proc/partitions 
+xvda 
+xvda1 
+END (0) 
+正在安装包存储库...
+validating format of repository file /tmp/scm_prepare_node.Qd3WJCtl/repos/rhel6/cloudera-manager.repo 
+installing repository file /tmp/scm_prepare_node.Qd3WJCtl/repos/rhel6/cloudera-manager.repo 
+repository file /tmp/scm_prepare_node.Qd3WJCtl/repos/rhel6/cloudera-manager.repo installed 
+正在刷新包元数据...
+BEGIN sudo yum clean all 
+Loaded plugins: amazon-id, rhui-lb, security 
+Cleaning repos: cloudera-manager rhui-REGION-client-config-server-6 
+: rhui-REGION-rhel-server-releases 
+: rhui-REGION-rhel-server-rh-common 
+Cleaning up Everything 
+END (0) 
+BEGIN sudo rm -Rf /var/cache/yum/koji-override-0 /var/cache/yum/x86_64 
+END (0) 
+BEGIN sudo yum makecache 
+Loaded plugins: amazon-id, rhui-lb, security 
+Metadata Cache Created 
+END (0) 
+正在安装 jdk 包...
+BEGIN sudo yum list installed jdk 
+Loaded plugins: amazon-id, rhui-lb, security 
+Error: No matching Packages to list 
+END (1) 
+BEGIN sudo yum info jdk 
+Loaded plugins: amazon-id, rhui-lb, security 
+Available Packages 
+Name : jdk 
+Arch : x86_64 
+Epoch : 2000 
+Version : 1.6.0_31 
+Release : fcs 
+Size : 68 M 
+Repo : cloudera-manager 
+Summary : Java(TM) Platform Standard Edition Development Kit 
+URL : http://java.sun.com/ 
+License : Copyright (c) 2011, Oracle and/or its affiliates. All rights 
+: reserved. Also under other license(s) as shown at the Description 
+: field. 
+Description : The Java Platform Standard Edition Development Kit (JDK) includes 
+: both the runtime environment (Java virtual machine, the Java 
+: platform classes and supporting files) and development tools 
+: (compilers, debuggers, tool libraries and other tools). 
+: 
+: The JDK is a development environment for building applications, 
+: applets and components that can be deployed with the Java Platform 
+: Standard Edition Runtime Environment. 
+
+END (0) 
+BEGIN sudo yum -y install jdk.x86_64 
+Loaded plugins: amazon-id, rhui-lb, security 
+Setting up Install Process 
+Resolving Dependencies 
+--> Running transaction check 
+---> Package jdk.x86_64 2000:1.6.0_31-fcs will be installed 
+--> Finished Dependency Resolution 
+
+Dependencies Resolved 
+
+================================================================================ 
+Package Arch Version Repository Size 
+================================================================================ 
+Installing: 
+jdk x86_64 2000:1.6.0_31-fcs cloudera-manager 68 M 
+
+Transaction Summary 
+================================================================================ 
+Install 1 Package(s) 
+
+Total download size: 68 M 
+Installed size: 143 M 
+Downloading Packages: 
+Running rpm_check_debug 
+Running Transaction Test 
+Transaction Test Succeeded 
+Running Transaction 
+Installing : 2000:jdk-1.6.0_31-fcs.x86_64 1/1 
+Unpacking JAR files... 
+rt.jar... 
+jsse.jar... 
+charsets.jar... 
+tools.jar... 
+localedata.jar... 
+plugin.jar... 
+javaws.jar... 
+deploy.jar... 
+Verifying : 2000:jdk-1.6.0_31-fcs.x86_64 1/1 
+
+Installed: 
+jdk.x86_64 2000:1.6.0_31-fcs 
+
+Complete! 
+END (0) 
+remote package jdk installed 
+正在安装 oracle-j2sdk1.7 包...
+BEGIN sudo yum list installed oracle-j2sdk1.7 
+Loaded plugins: amazon-id, rhui-lb, security 
+Installed Packages 
+oracle-j2sdk1.7.x86_64 1.7.0+update67-1 @cloudera-manager 
+END (0) 
+BEGIN echo jdk oracle-j2sdk1.7 cloudera-manager-agent cloudera-manager-daemons | grep oracle-j2sdk1.7 
+jdk oracle-j2sdk1.7 cloudera-manager-agent cloudera-manager-daemons 
+END (0) 
+BEGIN sudo yum info oracle-j2sdk1.7 
+Loaded plugins: amazon-id, rhui-lb, security 
+Installed Packages 
+Name : oracle-j2sdk1.7 
+Arch : x86_64 
+Version : 1.7.0+update67 
+Release : 1 
+Size : 279 M 
+Repo : installed 
+From repo : cloudera-manager 
+Summary : no description given 
+URL : http://example.com/no-uri-given 
+License : unknown 
+Description : no description given 
+
+END (0) 
+BEGIN sudo yum -y install oracle-j2sdk1.7.x86_64 
+Loaded plugins: amazon-id, rhui-lb, security 
+Setting up Install Process 
+Package oracle-j2sdk1.7-1.7.0+update67-1.x86_64 already installed and latest version 
+Nothing to do 
+END (0) 
+remote package oracle-j2sdk1.7 installed 
+正在安装 cloudera-manager-agent 包...
+BEGIN sudo yum list installed cloudera-manager-agent 
+Loaded plugins: amazon-id, rhui-lb, security 
+Error: No matching Packages to list 
+END (1) 
+BEGIN sudo yum info cloudera-manager-agent 
+Loaded plugins: amazon-id, rhui-lb, security 
+Available Packages 
+Name : cloudera-manager-agent 
+Arch : x86_64 
+Version : 5.7.0 
+Release : 1.cm570.p0.76.el6 
+Size : 7.5 M 
+Repo : cloudera-manager 
+Summary : The Cloudera Manager Agent 
+URL : http://www.cloudera.com 
+License : Proprietary 
+Description : The Cloudera Manager Agent. 
+: 
+: The Agent is deployed to machines running services managed by 
+: Cloudera Manager. 
+
+END (0) 
+Version : 5.7.0 
+Release : 1.cm570.p0.76.el6 
+BEGIN sudo yum -y install cloudera-manager-agent 
+Loaded plugins: amazon-id, rhui-lb, security 
+Setting up Install Process 
+Resolving Dependencies 
+--> Running transaction check 
+---> Package cloudera-manager-agent.x86_64 0:5.7.0-1.cm570.p0.76.el6 will be installed 
+--> Processing Dependency: fuse for package: cloudera-manager-agent-5.7.0-1.cm570.p0.76.el6.x86_64 
+--> Processing Dependency: mod_ssl for package: cloudera-manager-agent-5.7.0-1.cm570.p0.76.el6.x86_64 
+--> Processing Dependency: MySQL-python for package: cloudera-manager-agent-5.7.0-1.cm570.p0.76.el6.x86_64 
+--> Processing Dependency: fuse-libs for package: cloudera-manager-agent-5.7.0-1.cm570.p0.76.el6.x86_64 
+--> Processing Dependency: python-psycopg2 for package: cloudera-manager-agent-5.7.0-1.cm570.p0.76.el6.x86_64 
+--> Processing Dependency: openssl-devel for package: cloudera-manager-agent-5.7.0-1.cm570.p0.76.el6.x86_64 
+--> Running transaction check 
+---> Package MySQL-python.x86_64 0:1.2.3-0.3.c1.1.el6 will be installed 
+---> Package fuse.x86_64 0:2.8.3-5.el6 will be installed 
+---> Package fuse-libs.x86_64 0:2.8.3-5.el6 will be installed 
+---> Package mod_ssl.x86_64 1:2.2.15-53.el6 will be installed 
+---> Package openssl-devel.x86_64 0:1.0.1e-48.el6_8.1 will be installed 
+--> Processing Dependency: openssl = 1.0.1e-48.el6_8.1 for package: openssl-devel-1.0.1e-48.el6_8.1.x86_64 
+--> Processing Dependency: zlib-devel for package: openssl-devel-1.0.1e-48.el6_8.1.x86_64 
+--> Processing Dependency: krb5-devel for package: openssl-devel-1.0.1e-48.el6_8.1.x86_64 
+---> Package python-psycopg2.x86_64 0:2.0.14-2.el6 will be installed 
+--> Running transaction check 
+---> Package krb5-devel.x86_64 0:1.10.3-57.el6 will be installed 
+--> Processing Dependency: krb5-libs = 1.10.3-57.el6 for package: krb5-devel-1.10.3-57.el6.x86_64 
+--> Processing Dependency: libselinux-devel for package: krb5-devel-1.10.3-57.el6.x86_64 
+--> Processing Dependency: libcom_err-devel for package: krb5-devel-1.10.3-57.el6.x86_64 
+--> Processing Dependency: keyutils-libs-devel for package: krb5-devel-1.10.3-57.el6.x86_64 
+---> Package openssl.x86_64 0:1.0.1e-42.el6 will be updated 
+---> Package openssl.x86_64 0:1.0.1e-48.el6_8.1 will be an update 
+---> Package zlib-devel.x86_64 0:1.2.3-29.el6 will be installed 
+--> Running transaction check 
+---> Package keyutils-libs-devel.x86_64 0:1.4-5.el6 will be installed 
+---> Package krb5-libs.x86_64 0:1.10.3-42.el6 will be updated 
+--> Processing Dependency: krb5-libs = 1.10.3-42.el6 for package: krb5-workstation-1.10.3-42.el6.x86_64 
+---> Package krb5-libs.x86_64 0:1.10.3-57.el6 will be an update 
+---> Package libcom_err-devel.x86_64 0:1.41.12-22.el6 will be installed 
+---> Package libselinux-devel.x86_64 0:2.0.94-7.el6 will be installed 
+--> Processing Dependency: libselinux = 2.0.94-7.el6 for package: libselinux-devel-2.0.94-7.el6.x86_64 
+--> Processing Dependency: libsepol-devel >= 2.0.32-1 for package: libselinux-devel-2.0.94-7.el6.x86_64 
+--> Processing Dependency: pkgconfig(libsepol) for package: libselinux-devel-2.0.94-7.el6.x86_64 
+--> Running transaction check 
+---> Package krb5-workstation.x86_64 0:1.10.3-42.el6 will be updated 
+---> Package krb5-workstation.x86_64 0:1.10.3-57.el6 will be an update 
+---> Package libselinux.x86_64 0:2.0.94-5.8.el6 will be updated 
+--> Processing Dependency: libselinux = 2.0.94-5.8.el6 for package: libselinux-utils-2.0.94-5.8.el6.x86_64 
+--> Processing Dependency: libselinux = 2.0.94-5.8.el6 for package: libselinux-python-2.0.94-5.8.el6.x86_64 
+---> Package libselinux.x86_64 0:2.0.94-7.el6 will be an update 
+---> Package libsepol-devel.x86_64 0:2.0.41-4.el6 will be installed 
+--> Running transaction check 
+---> Package libselinux-python.x86_64 0:2.0.94-5.8.el6 will be updated 
+---> Package libselinux-python.x86_64 0:2.0.94-7.el6 will be an update 
+---> Package libselinux-utils.x86_64 0:2.0.94-5.8.el6 will be updated 
+---> Package libselinux-utils.x86_64 0:2.0.94-7.el6 will be an update 
+--> Finished Dependency Resolution 
+
+Dependencies Resolved 
+
+================================================================================ 
+Package Arch Version Repository Size 
+================================================================================ 
+Installing: 
+cloudera-manager-agent 
+x86_64 5.7.0-1.cm570.p0.76.el6 
+cloudera-manager 7.5 M 
+Installing for dependencies: 
+MySQL-python x86_64 1.2.3-0.3.c1.1.el6 
+rhui-REGION-rhel-server-releases 86 k 
+fuse x86_64 2.8.3-5.el6 rhui-REGION-rhel-server-releases 77 k 
+fuse-libs x86_64 2.8.3-5.el6 rhui-REGION-rhel-server-releases 74 k 
+keyutils-libs-devel 
+x86_64 1.4-5.el6 rhui-REGION-rhel-server-releases 29 k 
+krb5-devel x86_64 1.10.3-57.el6 rhui-REGION-rhel-server-releases 504 k 
+libcom_err-devel x86_64 1.41.12-22.el6 rhui-REGION-rhel-server-releases 33 k 
+libselinux-devel x86_64 2.0.94-7.el6 rhui-REGION-rhel-server-releases 137 k 
+libsepol-devel x86_64 2.0.41-4.el6 rhui-REGION-rhel-server-releases 64 k 
+mod_ssl x86_64 1:2.2.15-53.el6 rhui-REGION-rhel-server-releases 97 k 
+openssl-devel x86_64 1.0.1e-48.el6_8.1 
+rhui-REGION-rhel-server-releases 1.2 M 
+python-psycopg2 x86_64 2.0.14-2.el6 rhui-REGION-rhel-server-releases 100 k 
+zlib-devel x86_64 1.2.3-29.el6 rhui-REGION-rhel-server-releases 44 k 
+Updating for dependencies: 
+krb5-libs x86_64 1.10.3-57.el6 rhui-REGION-rhel-server-releases 771 k 
+krb5-workstation x86_64 1.10.3-57.el6 rhui-REGION-rhel-server-releases 813 k 
+libselinux x86_64 2.0.94-7.el6 rhui-REGION-rhel-server-releases 109 k 
+libselinux-python 
+x86_64 2.0.94-7.el6 rhui-REGION-rhel-server-releases 203 k 
+libselinux-utils x86_64 2.0.94-7.el6 rhui-REGION-rhel-server-releases 82 k 
+openssl x86_64 1.0.1e-48.el6_8.1 
+rhui-REGION-rhel-server-releases 1.5 M 
+
+Transaction Summary 
+================================================================================ 
+Install 13 Package(s) 
+Upgrade 6 Package(s) 
+
+Total download size: 13 M 
+Downloading Packages: 
+-------------------------------------------------------------------------------- 
+Total 189 kB/s | 13 MB 01:12 
+Running rpm_check_debug 
+Running Transaction Test 
+Transaction Test Succeeded 
+Running Transaction 
+Updating : libselinux-2.0.94-7.el6.x86_64 1/25 
+Updating : krb5-libs-1.10.3-57.el6.x86_64 2/25 
+Updating : openssl-1.0.1e-48.el6_8.1.x86_64 3/25 
+Installing : 1:mod_ssl-2.2.15-53.el6.x86_64 4/25 
+Installing : MySQL-python-1.2.3-0.3.c1.1.el6.x86_64 5/25 
+Installing : fuse-libs-2.8.3-5.el6.x86_64 6/25 
+Installing : fuse-2.8.3-5.el6.x86_64 7/25 
+Installing : libsepol-devel-2.0.41-4.el6.x86_64 8/25 
+Installing : libselinux-devel-2.0.94-7.el6.x86_64 9/25 
+Installing : libcom_err-devel-1.41.12-22.el6.x86_64 10/25 
+Installing : zlib-devel-1.2.3-29.el6.x86_64 11/25 
+Installing : keyutils-libs-devel-1.4-5.el6.x86_64 12/25 
+Installing : krb5-devel-1.10.3-57.el6.x86_64 13/25 
+Installing : openssl-devel-1.0.1e-48.el6_8.1.x86_64 14/25 
+Installing : python-psycopg2-2.0.14-2.el6.x86_64 15/25 
+Installing : cloudera-manager-agent-5.7.0-1.cm570.p0.76.el6.x86_64 16/25 
+Updating : krb5-workstation-1.10.3-57.el6.x86_64 17/25 
+Updating : libselinux-python-2.0.94-7.el6.x86_64 18/25 
+Updating : libselinux-utils-2.0.94-7.el6.x86_64 19/25 
+Cleanup : krb5-workstation-1.10.3-42.el6.x86_64 20/25 
+Cleanup : libselinux-utils-2.0.94-5.8.el6.x86_64 21/25 
+Cleanup : libselinux-python-2.0.94-5.8.el6.x86_64 22/25 
+Cleanup : openssl-1.0.1e-42.el6.x86_64 23/25 
+Cleanup : krb5-libs-1.10.3-42.el6.x86_64 24/25 
+Cleanup : libselinux-2.0.94-5.8.el6.x86_64 25/25 
+Verifying : 1:mod_ssl-2.2.15-53.el6.x86_64 1/25 
+Verifying : MySQL-python-1.2.3-0.3.c1.1.el6.x86_64 2/25 
+Verifying : openssl-devel-1.0.1e-48.el6_8.1.x86_64 3/25 
+Verifying : python-psycopg2-2.0.14-2.el6.x86_64 4/25 
+Verifying : keyutils-libs-devel-1.4-5.el6.x86_64 5/25 
+Verifying : zlib-devel-1.2.3-29.el6.x86_64 6/25 
+Verifying : krb5-devel-1.10.3-57.el6.x86_64 7/25 
+Verifying : libcom_err-devel-1.41.12-22.el6.x86_64 8/25 
+Verifying : cloudera-manager-agent-5.7.0-1.cm570.p0.76.el6.x86_64 9/25 
+Verifying : krb5-workstation-1.10.3-57.el6.x86_64 10/25 
+Verifying : openssl-1.0.1e-48.el6_8.1.x86_64 11/25 
+Verifying : libselinux-python-2.0.94-7.el6.x86_64 12/25 
+Verifying : libsepol-devel-2.0.41-4.el6.x86_64 13/25 
+Verifying : libselinux-utils-2.0.94-7.el6.x86_64 14/25 
+Verifying : fuse-2.8.3-5.el6.x86_64 15/25 
+Verifying : libselinux-2.0.94-7.el6.x86_64 16/25 
+Verifying : libselinux-devel-2.0.94-7.el6.x86_64 17/25 
+Verifying : fuse-libs-2.8.3-5.el6.x86_64 18/25 
+Verifying : krb5-libs-1.10.3-57.el6.x86_64 19/25 
+Verifying : libselinux-utils-2.0.94-5.8.el6.x86_64 20/25 
+Verifying : openssl-1.0.1e-42.el6.x86_64 21/25 
+Verifying : krb5-libs-1.10.3-42.el6.x86_64 22/25 
+Verifying : krb5-workstation-1.10.3-42.el6.x86_64 23/25 
+Verifying : libselinux-2.0.94-5.8.el6.x86_64 24/25 
+Verifying : libselinux-python-2.0.94-5.8.el6.x86_64 25/25 
+
+Installed: 
+cloudera-manager-agent.x86_64 0:5.7.0-1.cm570.p0.76.el6 
+
+Dependency Installed: 
+MySQL-python.x86_64 0:1.2.3-0.3.c1.1.el6 
+fuse.x86_64 0:2.8.3-5.el6 
+fuse-libs.x86_64 0:2.8.3-5.el6 
+keyutils-libs-devel.x86_64 0:1.4-5.el6 
+krb5-devel.x86_64 0:1.10.3-57.el6 
+libcom_err-devel.x86_64 0:1.41.12-22.el6 
+libselinux-devel.x86_64 0:2.0.94-7.el6 
+libsepol-devel.x86_64 0:2.0.41-4.el6 
+mod_ssl.x86_64 1:2.2.15-53.el6 
+openssl-devel.x86_64 0:1.0.1e-48.el6_8.1 
+python-psycopg2.x86_64 0:2.0.14-2.el6 
+zlib-devel.x86_64 0:1.2.3-29.el6 
+
+Dependency Updated: 
+krb5-libs.x86_64 0:1.10.3-57.el6 
+krb5-workstation.x86_64 0:1.10.3-57.el6 
+libselinux.x86_64 0:2.0.94-7.el6 
+libselinux-python.x86_64 0:2.0.94-7.el6 
+libselinux-utils.x86_64 0:2.0.94-7.el6 
+openssl.x86_64 0:1.0.1e-48.el6_8.1 
+
+Complete! 
+END (0) 
+remote package cloudera-manager-agent installed 
+正在安装 cloudera-manager-daemons 包...
+BEGIN sudo yum list installed cloudera-manager-daemons 
+Loaded plugins: amazon-id, rhui-lb, security 
+Installed Packages 
+cloudera-manager-daemons.x86_64 5.7.0-1.cm570.p0.76.el6 @cloudera-manager 
+END (0) 
+BEGIN echo jdk oracle-j2sdk1.7 cloudera-manager-agent cloudera-manager-daemons | grep cloudera-manager-daemons 
+jdk oracle-j2sdk1.7 cloudera-manager-agent cloudera-manager-daemons 
+END (0) 
+BEGIN sudo yum info cloudera-manager-daemons 
+Loaded plugins: amazon-id, rhui-lb, security 
+Installed Packages 
+Name : cloudera-manager-daemons 
+Arch : x86_64 
+Version : 5.7.0 
+Release : 1.cm570.p0.76.el6 
+Size : 861 M 
+Repo : installed 
+From repo : cloudera-manager 
+Summary : Provides daemons for monitoring Hadoop and related tools. 
+URL : http://www.cloudera.com 
+License : Proprietary 
+Description : This package includes daemons for monitoring and managing Hadoop. 
+
+END (0) 
+Version : 5.7.0 
+Release : 1.cm570.p0.76.el6 
+BEGIN sudo yum -y install cloudera-manager-daemons 
+Loaded plugins: amazon-id, rhui-lb, security 
+Setting up Install Process 
+Package cloudera-manager-daemons-5.7.0-1.cm570.p0.76.el6.x86_64 already installed and latest version 
+Nothing to do 
+END (0) 
+remote package cloudera-manager-daemons installed 
+正在安装“无限强度加密”政策文件。
+BEGIN rpm -ql jdk | grep "/usr/java/jdk1.6" | sort | head -n 1 
+/usr/java/jdk1.6.0_31 
+END (0) 
+BEGIN rpm -ql oracle-j2sdk1.7 | grep "/usr/java/jdk1.7" | sort | head -n 1 
+/usr/java/jdk1.7.0_67-cloudera 
+END (0) 
+Java 6 prefix is /usr/java/jdk1.6.0_31 
+Java 7 prefix is /usr/java/jdk1.7.0_67-cloudera 
+Installing unlimited strength US_export_policy.jar for Java 6 
+BEGIN sudo cp /tmp/scm_prepare_node.Qd3WJCtl/US_export_policy.jar.6 /usr/java/jdk1.6.0_31/jre/lib/security/US_export_policy.jar 
+END (0) 
+Installing unlimited strength local_policy.jar for Java 6 
+BEGIN sudo cp /tmp/scm_prepare_node.Qd3WJCtl/local_policy.jar.6 /usr/java/jdk1.6.0_31/jre/lib/security/local_policy.jar 
+END (0) 
+Installing unlimited strength US_export_policy.jar for Java 7 
+BEGIN sudo cp /tmp/scm_prepare_node.Qd3WJCtl/US_export_policy.jar.7 /usr/java/jdk1.7.0_67-cloudera/jre/lib/security/US_export_policy.jar 
+END (0) 
+Installing unlimited strength local_policy.jar for Java 7 
+BEGIN sudo cp /tmp/scm_prepare_node.Qd3WJCtl/local_policy.jar.7 /usr/java/jdk1.7.0_67-cloudera/jre/lib/security/local_policy.jar 
+END (0) 
+正在配置 Cloudera Manager Agent...
+BEGIN sudo sed -e 's/\(CMF_AGENT_ARGS=\).*/\1"--host_id i-705f3bd7"/' -i /etc/default/cloudera-scm-agent 
+END (0) 
+BEGIN grep server_host=ip-172-31-14-229.ap-northeast-2.compute.internal /etc/cloudera-scm-agent/config.ini 
+END (1) 
+BEGIN sudo sed -e 's/\(server_host=\).*/\1ip-172-31-14-229.ap-northeast-2.compute.internal/' -i /etc/cloudera-scm-agent/config.ini 
+END (0) 
+scm agent configured 
+正在启动 Cloudera Manager Agent...
+BEGIN /sbin/service cloudera-scm-agent status 
+cloudera-scm-agent is stopped 
+END (3) 
+BEGIN sudo /sbin/service cloudera-scm-agent start 
+K 
+Startingent logs: 
+BEGIN sudo tail -n 50 /var/log/cloudera-scm-agent//cloudera-scm-agent.out | sed 's/^/>>/' 
+>>/usr/lib64/cmf/agent/build/env/lib/python2.6/site-packages/cmf-5.7.0-py2.6.egg/cmf/parcel.py:17: DeprecationWarning: the sets module is deprecated 
+>> from sets import Set 
+>>[27/May/2016 03:24:31 +0000] 3685 MainThread agent INFO SCM Agent Version: 5.7.0 
+>>/usr/lib64/cmf/agent/build/env/lib/python2.6/site-packages/cmf-5.7.0-py2.6.egg/cmf/parcel.py:17: DeprecationWarning: the sets module is deprecated 
+>> from sets import Set 
+>>[27/May/2016 03:24:31 +0000] 3685 MainThread agent INFO SCM Agent Version: 5.7.0 
+END (0) 
+BEGIN sudo tail -n 50 /var/log/cloudera-scm-agent//cloudera-scm-agent.log | sed 's/^/>>/' 
+tail: cannot open `/var/log/cloudera-scm-agent//cloudera-scm-agent.log' for reading: No such file or directory 
+tail: cannot open `/var/log/cloudera-scm-agent//cloudera-scm-agent.log' for reading: No such file or directory 
+END (0) 
+end of agent logs. 
+scm agent started 
+已成功完成脚本安装。
+all done 
+closing logging file descriptor 
