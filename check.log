@@ -1,0 +1,59 @@
+	检查器在所有 5 个主机上运行。
+个别主机正确地解析了自己的主机名称。
+查询存在冲突的初始脚本时未发现错误。
+检查 /etc/hosts 时未发现错误。
+所有主机均将 localhost 解析为 127.0.0.1。
+检查过的所有主机均正确且及时地解析了彼此的主机名称。
+主机时钟几乎同步（10 分钟内）。
+整个群集中的主机时区一致。
+无用户或组缺失。
+软件包和 parcel 之间未检测到冲突。
+没有存在已知错误的内核版本在运行。
+Cloudera 建议将 /proc/sys/vm/swappiness 设置为最大值 10。当前设置为 60。使用 sysctl 命令在运行时更改该设置并编辑 /etc/sysctl.conf，以在重启后保存该设置。您可以继续进行安装，但 Cloudera Manager 可能会报告您的主机由于交换而运行状况不良。以下主机将受到影响： 
+已启用透明大页面压缩，可能会导致重大性能问题。请运行“echo never > /sys/kernel/mm/transparent_hugepage/defrag”以禁用此设置，然后将同一命令添加到 /etc/rc.local 等初始脚本中，以便在系统重启时予以设置。以下主机将受到影响： 
+已满足 CDH 5 Hue Python 版本依赖关系。
+0台主机正在运行CDH 4，5台主机正在运行CDH5。
+每个群集中检查过的所有主机均在运行相同版本的组件。
+所有托管的主机都拥有不一致的 Java 版本。
+所检查的所有 Cloudera Management Daemon 版本与服务器一致。
+所检查的所有 Cloudera 管理代理版本与服务器一致。
+版本汇总
+Cluster 1 — CDH 5
+
+主机
+ip-172-31-14-[227-230].ap-northeast-2.compute.internal; ip-172-31-7-21.ap-northeast-2.compute.internal
+组件	版本	发行版	CDH 版本
+Bigtop-Tomcat（仅限 CDH 5）	0.7.0+cdh5.7.1+0	1.cdh5.7.1.p0.14	CDH 5
+Crunch（仅限 CDH 5 ）	0.11.0+cdh5.7.1+92	1.cdh5.7.1.p0.15	CDH 5
+Flume NG	1.6.0+cdh5.7.1+40	1.cdh5.7.1.p0.13	CDH 5
+MapReduce 1	2.6.0+cdh5.7.1+1335	1.cdh5.7.1.p0.15	CDH 5
+Hadoop	2.6.0+cdh5.7.1+1335	1.cdh5.7.1.p0.15	CDH 5
+HDFS	2.6.0+cdh5.7.1+1335	1.cdh5.7.1.p0.15	CDH 5
+HttpFS	2.6.0+cdh5.7.1+1335	1.cdh5.7.1.p0.15	CDH 5
+hadoop-kms	2.6.0+cdh5.7.1+1335	1.cdh5.7.1.p0.15	CDH 5
+MapReduce 2	2.6.0+cdh5.7.1+1335	1.cdh5.7.1.p0.15	CDH 5
+YARN	2.6.0+cdh5.7.1+1335	1.cdh5.7.1.p0.15	CDH 5
+HBase	1.2.0+cdh5.7.1+142	1.cdh5.7.1.p0.17	CDH 5
+Lily HBase Indexer	1.5+cdh5.7.1+64	1.cdh5.7.1.p0.15	CDH 5
+Hive	1.1.0+cdh5.7.1+564	1.cdh5.7.1.p0.14	CDH 5
+HCatalog	1.1.0+cdh5.7.1+564	1.cdh5.7.1.p0.14	CDH 5
+Hue	3.9.0+cdh5.7.1+1804	1.cdh5.7.1.p0.14	CDH 5
+Impala	2.5.0+cdh5.7.1+0	1.cdh5.7.1.p0.14	CDH 5
+Kite（仅限 CDH 5 ）	1.0.0+cdh5.7.1+135	1.cdh5.7.1.p0.16	CDH 5
+Llama（仅限 CDH 5 ）	1.0.0+cdh5.7.1+0	1.cdh5.7.1.p0.17	CDH 5
+Mahout	0.9+cdh5.7.1+28	1.cdh5.7.1.p0.15	CDH 5
+Oozie	4.1.0+cdh5.7.1+271	1.cdh5.7.1.p0.14	CDH 5
+Parquet	1.5.0+cdh5.7.1+175	1.cdh5.7.1.p0.15	CDH 5
+Pig	0.12.0+cdh5.7.1+83	1.cdh5.7.1.p0.15	CDH 5
+sentry	1.5.1+cdh5.7.1+190	1.cdh5.7.1.p0.15	CDH 5
+Solr	4.10.3+cdh5.7.1+403	1.cdh5.7.1.p0.15	CDH 5
+spark	1.6.0+cdh5.7.1+193	1.cdh5.7.1.p0.16	CDH 5
+Sqoop	1.99.5+cdh5.7.1+39	1.cdh5.7.1.p0.16	CDH 5
+Sqoop	1.4.6+cdh5.7.1+56	1.cdh5.7.1.p0.14	CDH 5
+Whirr	0.9.0+cdh5.7.1+18	1.cdh5.7.1.p0.14	CDH 5
+ZooKeeper	3.4.5+cdh5.7.1+93	1.cdh5.7.1.p0.15	CDH 5
+Cloudera Manager Management Daemon	5.7.0	1.cm570.p0.76	不适用
+Supervisord	3.0-cm5.7.0	不可用	不适用
+Java 7	JAVA_HOME=/usr/java/jdk1.7.0_67-cloudera java version "1.7.0_67" Java(TM) SE Runtime Environment (build 1.7.0_67-b01) Java HotSpot(TM) 64-Bit Server VM (build 24.65-b04, mixed mode)	不可用	不适用
+Java 6	JAVA_HOME=/usr/java/jdk1.6.0_31 java version "1.6.0_31" Java(TM) SE Runtime Environment (build 1.6.0_31-b04) Java HotSpot(TM) 64-Bit Server VM (build 20.6-b01, mixed mode)	不可用	不适用
+Cloudera Manager Agent	5.7.0	1.cm570.p0.76.el6	不适用
